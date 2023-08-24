@@ -118,7 +118,7 @@ export const TourOverlay = forwardRef<TourOverlayRef, TourOverlayProps>((props, 
               ? cx - (width / 2)
               : (vwDP(100) - width) / 2,
             marginTop: tooltipGap,
-            top: tourStep.shape === Shape.RECT ? spot.heigth : cy + half,
+            top: tourStep.shape === Shape.RECT ? spot.height : cy + half,
           };
 
           case Position.TOP: return {
