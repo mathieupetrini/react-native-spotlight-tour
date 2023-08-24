@@ -25,6 +25,11 @@ export enum Position {
   TOP = "top",
 }
 
+export enum Shape {
+  CIRCLE = "circle",
+  RECT = "rect",
+}
+
 /**
  * Possible motion effect for the tour spotlight:
  * - `bounce`
@@ -135,7 +140,7 @@ export interface TourStep {
    */
   onBackdropPress?: BackdropPressBehavior;
   /**
-   * Defines the postition of tooltip respect to the spotlight. The options are:
+   * Defines the position of tooltip respect to the spotlight. The options are:
    * - `Position.BOTTOM`
    * - `Position.LEFT`
    * - `Position.RIGHT`
@@ -148,6 +153,12 @@ export interface TourStep {
    * tour within the tooltip.
    */
   render: (props: RenderProps) => ReactElement;
+  /**
+   * Defines the overlay shape? The options are:
+   * - `Shape.CIRCLE` (default)
+   * - `Shape.RECT`
+   */
+  shape?: Shape;
 }
 
 export interface SpotlightTour {

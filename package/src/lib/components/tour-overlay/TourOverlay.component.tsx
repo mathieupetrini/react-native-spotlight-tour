@@ -2,38 +2,31 @@ import React, {
   forwardRef,
   useCallback,
   useContext,
+  useEffect,
   useImperativeHandle,
   useMemo,
   useRef,
   useState,
-  useEffect,
-} from "react";
-import {
-  Animated,
-  ColorValue,
-  Dimensions,
-  LayoutRectangle,
-  Modal,
-  Platform,
-  View,
-  ViewStyle,
-} from "react-native";
-import { Defs, Mask, Rect, Svg } from "react-native-svg";
+} from 'react';
+import { Animated, ColorValue, Dimensions, LayoutRectangle, Modal, Platform, View, ViewStyle, } from 'react-native';
+import { Defs, Mask, Rect, Svg } from 'react-native-svg';
 
-import { Optional } from "../../../helpers/common";
-import { vhDP, vwDP } from "../../../helpers/responsive";
+import { Optional } from '../../../helpers/common';
+import { vhDP, vwDP } from '../../../helpers/responsive';
 import {
   Align,
   BackdropPressBehavior,
   Motion,
   OSConfig,
   Position,
+  Shape,
   SpotlightTourContext,
   TourStep,
-} from "../../SpotlightTour.context";
+} from '../../SpotlightTour.context';
+import { CircleShape } from './shapes/CircleShape.component';
+import { RectShape } from './shapes/RectShape.component';
 
-import { OverlayView } from "./TourOverlay.styles";
-import { CircleShape } from "./shapes/CircleShape.component";
+import { OverlayView } from './TourOverlay.styles';
 
 export interface TourOverlayRef {
   hideTooltip: () => Promise<Animated.EndResult>;
@@ -125,7 +118,7 @@ export const TourOverlay = forwardRef<TourOverlayRef, TourOverlayProps>((props, 
               ? cx - (width / 2)
               : (vwDP(100) - width) / 2,
             marginTop: tooltipGap,
-            top: cy + half,
+            top: tourStep.shape === Shape.RECT ? spot.heigth : cy + half,
           };
 
           case Position.TOP: return {
@@ -203,11 +196,21 @@ export const TourOverlay = forwardRef<TourOverlayRef, TourOverlayProps>((props, 
           <Defs>
             <Mask id="mask" x={0} y={0} height="100%" width="100%">
               <Rect height="100%" width="100%" fill="#fff" />
-              <CircleShape
-                motion={tourStep.motion ?? motion}
-                padding={padding}
-                useNativeDriver={useNativeDriver}
-              />
+              {
+                tourStep.shape === Shape.RECT ?
+                  (
+                    <RectShape
+                      motion={tourStep.motion ?? motion}
+                      useNativeDriver={useNativeDriver}
+                    />
+                  ) : (
+                    <CircleShape
+                      motion={tourStep.motion ?? motion}
+                      padding={padding}
+                      useNativeDriver={useNativeDriver}
+                    />
+                  )
+              }
             </Mask>
           </Defs>
 
